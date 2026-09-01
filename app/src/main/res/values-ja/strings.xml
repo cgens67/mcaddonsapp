@@ -40,4 +40,5 @@
     <string name="light">ライト</string>
     <string name="dark">ダーク</string>
     <string name="select_language">言語を選択</string>
+    <string name="no_addons_desc">フィルターまたは検索クエリを調整してみてください。</string>
 </resources>

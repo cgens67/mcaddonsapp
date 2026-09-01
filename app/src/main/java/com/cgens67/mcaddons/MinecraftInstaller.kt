@@ -37,19 +37,16 @@ object MinecraftInstaller {
         )
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, "application/octet-stream")
+            setDataAndType(uri, "*/*")
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
-            setPackage("com.mojang.minecraftpe")
         }
 
         try {
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            // Fallback chooser
-            val chooser = Intent.createChooser(intent, "Open with Minecraft")
+            val chooser = Intent.createChooser(intent, "Open with...")
             chooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(chooser)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

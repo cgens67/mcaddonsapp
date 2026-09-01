@@ -40,4 +40,5 @@
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="select_language">Select Language</string>
+    <string name="no_addons_desc">Try adjusting your filters or search query.</string>
 </resources>
