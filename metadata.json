@@ -1,0 +1,6 @@
+{
+  "name": "MC Addons",
+  "description": "Minecraft Bedrock one-tap add-on installer using Supabase and Jetpack Compose.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
