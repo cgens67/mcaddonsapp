@@ -41,4 +41,17 @@
     <string name="dark">Dark</string>
     <string name="select_language">Select Language</string>
     <string name="no_addons_desc">Try adjusting your filters or search query.</string>
+    <string name="status_incomplete">Incomplete</string>
+    <string name="status_beta">Beta</string>
+    <string name="status_experimental">Experimental</string>
+    <string name="system_language">System Default (%s)</string>
+    <string name="search_language_placeholder">Search languages...</string>
+    <string name="clear_search">Clear search</string>
+    <string name="applying">Applying...</string>
+    <string name="restarting">Restarting...</string>
+    <string name="no_results_found">No results found</string>
+    <string name="try_another_term">Try another search term</string>
+    <string name="last_updated_version">Updated: %s</string>
+    <string name="changing_language">Changing language...</string>
+    <string name="configure_app_language">Configure app language</string>
 </resources>

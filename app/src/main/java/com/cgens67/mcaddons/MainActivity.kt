@@ -87,10 +87,15 @@ class MainActivity : ComponentActivity() {
                         transitionSpec = {
                             val initialOrder = screenOrder[initialState] ?: 0
                             val targetOrder = screenOrder[targetState] ?: 0
+                            val spec = tween<androidx.compose.ui.unit.IntOffset>(durationMillis = 400, easing = FastOutSlowInEasing)
+                            val fadeSpec = tween<Float>(durationMillis = 400, easing = LinearEasing)
+                            
                             if (targetOrder > initialOrder) {
-                                (slideInHorizontally(animationSpec = tween(300)) { width -> width } + fadeIn(animationSpec = tween(300))).togetherWith(slideOutHorizontally(animationSpec = tween(300)) { width -> -width } + fadeOut(animationSpec = tween(300)))
+                                (slideInHorizontally(animationSpec = spec) { width -> width } + fadeIn(animationSpec = fadeSpec))
+                                    .togetherWith(slideOutHorizontally(animationSpec = spec) { width -> -width / 3 } + fadeOut(animationSpec = fadeSpec))
                             } else {
-                                (slideInHorizontally(animationSpec = tween(300)) { width -> -width } + fadeIn(animationSpec = tween(300))).togetherWith(slideOutHorizontally(animationSpec = tween(300)) { width -> width } + fadeOut(animationSpec = tween(300)))
+                                (slideInHorizontally(animationSpec = spec) { width -> -width / 3 } + fadeIn(animationSpec = fadeSpec))
+                                    .togetherWith(slideOutHorizontally(animationSpec = spec) { width -> width } + fadeOut(animationSpec = fadeSpec))
                             }
                         },
                         label = "screen_transition"
@@ -104,8 +109,7 @@ class MainActivity : ComponentActivity() {
                                 BackHandler { currentScreen = "home" }
                                 SettingsScreen(
                                     onNavigateBack = { currentScreen = "home" },
-                                    onNavigateToAppearance = { currentScreen = "appearance_settings" },
-                                    onNavigateToLanguage = { currentScreen = "language_settings" }
+                                    onNavigateToAppearance = { currentScreen = "appearance_settings" }
                                 )
                             }
                             "appearance_settings" -> {
@@ -116,12 +120,7 @@ class MainActivity : ComponentActivity() {
                                     onNavigateBack = { currentScreen = "settings" }
                                 )
                             }
-                            "language_settings" -> {
-                                BackHandler { currentScreen = "settings" }
-                                LanguageSettingsScreen(
-                                    onNavigateBack = { currentScreen = "settings" }
-                                )
-                            }
+
                             else -> {
                                 AddonScreen(
                                     onNavigateToAbout = { currentScreen = "about" },
@@ -226,7 +225,11 @@ fun AddonScreen(
                             addon = addon,
                             downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
                             onDownloadClick = { viewModel.downloadAndInstall(addon) },
-                            modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(300))
+                            modifier = Modifier.animateItem(
+                                fadeInSpec = tween(400, easing = FastOutSlowInEasing),
+                                fadeOutSpec = tween(200, easing = FastOutSlowInEasing),
+                                placementSpec = tween(400, easing = FastOutSlowInEasing)
+                            )
                         )
                     }
                 }

@@ -7,23 +7,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToAppearance: () -> Unit,
-    onNavigateToLanguage: () -> Unit
+    onNavigateToAppearance: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -68,16 +65,8 @@ fun SettingsScreen(
                 onClick = onNavigateToAppearance
             )
 
-            val context = LocalContext.current
-            val currentLocaleCode = remember { LocaleManager.getCurrentLocale(context) }
-            val currentLanguageName = LocaleManager.supportedLocales.find { it.first == currentLocaleCode }?.second ?: "English"
-
-            SettingsItemCard(
-                icon = { Icon(Icons.Filled.Language, contentDescription = null) },
-                title = stringResource(R.string.language),
-                subtitle = currentLanguageName,
-                onClick = onNavigateToLanguage
-            )
+            // The new LanguagePreference handles the bottom sheet internally
+            LanguagePreference()
         }
     }
 }
