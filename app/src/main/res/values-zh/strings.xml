@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MC插件</string>
+    <string name="search_addons">搜索插件...</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_texture_pack">材质包</string>
+    <string name="filter_addon">插件</string>
+    <string name="filter_world">世界</string>
+    <string name="refresh">刷新</string>
+    <string name="settings">设置</string>
+    <string name="about_creators">关于创作者</string>
+    <string name="error">错误: %s</string>
+    <string name="no_addons_found">未找到插件。</string>
+    <string name="open_in_minecraft">在Minecraft中打开</string>
+    <string name="downloading">正在下载...</string>
+    <string name="download_and_install">下载并安装</string>
+    <string name="about_title">关于</string>
+    <string name="back_to_addons">返回</string>
+    <string name="mc_addons">MC插件</string>
+    <string name="version">版本 1.0 • 基岩版一键安装器</string>
+    <string name="description">直接下载材质包、插件和世界，并一键即时导入Minecraft基岩版。</string>
+    <string name="main_authors">主要作者和创作者</string>
+    <string name="author_role">主要作者与创作者</string>
+    <string name="joseph_lim_desc">MC Addons的首席概念设计师和核心架构师。</string>
+    <string name="loo_chin_siang_desc">安装引擎的首席开发人员和技术架构师。</string>
+    <string name="app_highlights">应用亮点</string>
+    <string name="app_highlights_desc">• Material Design 3 Expressive 界面
+• 实时 Supabase 云目录
+• 无忧的 .mcpack / .mcaddon / .mcworld 启动器
+• 基于 Kotlin &amp; Jetpack Compose 构建</string>
+    <string name="crafted_with">由</string>
+    <string name="by_authors">Joseph Lim &amp; Loo Chin Siang 制作</string>
+    <string name="settings_title">设置</string>
+    <string name="preferences">偏好设置</string>
+    <string name="appearance">外观</string>
+    <string name="appearance_desc">主题、颜色和视觉设置</string>
+    <string name="language">语言</string>
+    <string name="theme">主题</string>
+    <string name="system_default">系统默认</string>
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
+    <string name="select_language">选择语言</string>
+</resources>

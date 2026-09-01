@@ -1,4 +1,4 @@
-package com.example
+package com.cgens67.mcaddons
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

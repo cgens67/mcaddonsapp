@@ -1,4 +1,4 @@
-package com.example
+package com.cgens67.mcaddons
 
 import android.content.Context
 import android.content.Intent

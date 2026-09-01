@@ -1,7 +1,8 @@
-package com.example
+package com.cgens67.mcaddons
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
@@ -10,9 +11,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,19 +25,99 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+
+import androidx.compose.foundation.isSystemInDarkTheme
 import coil.compose.AsyncImage
-import com.example.ui.theme.MyApplicationTheme
+import com.cgens67.mcaddons.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
+    private lateinit var themePreferences: ThemePreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themePreferences = ThemePreferences(this)
         enableEdgeToEdge()
         setContent {
-            MyApplicationTheme(darkTheme = true) {
+            val selectedTheme by themePreferences.themeFlow.collectAsState()
+            val darkTheme = when (selectedTheme) {
+                "Dark" -> true
+                "Light" -> false
+                else -> isSystemInDarkTheme()
+            }
+            
+            MyApplicationTheme(darkTheme = darkTheme) {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    AddonScreen()
+                    var currentScreen by remember { mutableStateOf("home") }
+
+                    val screenOrder = mapOf(
+                        "home" to 0,
+                        "settings" to 1,
+                        "about" to 1,
+                        "appearance_settings" to 2,
+                        "language_settings" to 2
+                    )
+
+                    AnimatedContent(
+                        targetState = currentScreen,
+                        transitionSpec = {
+                            val initialOrder = screenOrder[initialState] ?: 0
+                            val targetOrder = screenOrder[targetState] ?: 0
+                            if (targetOrder > initialOrder) {
+                                (slideInHorizontally(animationSpec = tween(300)) { width -> width } + fadeIn(animationSpec = tween(300))).togetherWith(slideOutHorizontally(animationSpec = tween(300)) { width -> -width } + fadeOut(animationSpec = tween(300)))
+                            } else {
+                                (slideInHorizontally(animationSpec = tween(300)) { width -> -width } + fadeIn(animationSpec = tween(300))).togetherWith(slideOutHorizontally(animationSpec = tween(300)) { width -> width } + fadeOut(animationSpec = tween(300)))
+                            }
+                        },
+                        label = "screen_transition"
+                    ) { targetScreen ->
+                        when (targetScreen) {
+                            "about" -> {
+                                BackHandler { currentScreen = "home" }
+                                AboutScreen(onNavigateBack = { currentScreen = "home" })
+                            }
+                            "settings" -> {
+                                BackHandler { currentScreen = "home" }
+                                SettingsScreen(
+                                    onNavigateBack = { currentScreen = "home" },
+                                    onNavigateToAppearance = { currentScreen = "appearance_settings" },
+                                    onNavigateToLanguage = { currentScreen = "language_settings" }
+                                )
+                            }
+                            "appearance_settings" -> {
+                                BackHandler { currentScreen = "settings" }
+                                AppearanceSettingsScreen(
+                                    selectedTheme = selectedTheme,
+                                    onThemeSelected = { themePreferences.setTheme(it) },
+                                    onNavigateBack = { currentScreen = "settings" }
+                                )
+                            }
+                            "language_settings" -> {
+                                BackHandler { currentScreen = "settings" }
+                                LanguageSettingsScreen(
+                                    onNavigateBack = { currentScreen = "settings" }
+                                )
+                            }
+                            else -> {
+                                AddonScreen(
+                                    onNavigateToAbout = { currentScreen = "about" },
+                                    onNavigateToSettings = { currentScreen = "settings" }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -43,7 +126,11 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
+fun AddonScreen(
+    viewModel: AddonViewModel = viewModel(),
+    onNavigateToAbout: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {}
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -51,14 +138,20 @@ fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
             LargeTopAppBar(
                 title = { 
                     Text(
-                        "MC Addons", 
+                        stringResource(R.string.app_name), 
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineLarge
                     ) 
                 },
                 actions = {
                     IconButton(onClick = { viewModel.fetchAddons() }) {
-                        Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
+                    }
+                    IconButton(onClick = onNavigateToAbout) {
+                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_creators))
                     }
                 }
             )
@@ -75,23 +168,28 @@ fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text("Search addons...") },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                placeholder = { Text(stringResource(R.string.search_addons)) },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 shape = RoundedCornerShape(24.dp),
                 singleLine = true
             )
             
+                val categories = listOf(
+                    "All" to stringResource(R.string.filter_all),
+                    "Texture Pack" to stringResource(R.string.filter_texture_pack),
+                    "Addon" to stringResource(R.string.filter_addon),
+                    "World" to stringResource(R.string.filter_world)
+                )
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                val categories = listOf("All", "Texture Pack", "Addon", "World")
-                items(categories) { category ->
+                items(categories) { (id, name) ->
                     FilterChip(
-                        selected = uiState.selectedCategory == category,
-                        onClick = { viewModel.selectCategory(category) },
-                        label = { Text(category) }
+                        selected = uiState.selectedCategory == id,
+                        onClick = { viewModel.selectCategory(id) },
+                        label = { Text(name) }
                     )
                 }
             }
@@ -102,12 +200,12 @@ fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
                 }
             } else if (uiState.error != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
+                    Text(text = stringResource(R.string.error, uiState.error ?: ""), color = MaterialTheme.colorScheme.error)
                 }
             } else if (uiState.filteredAddons.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = "No addons found.", 
+                        text = stringResource(R.string.no_addons_found), 
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -121,7 +219,8 @@ fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
                         AddonCard(
                             addon = addon,
                             downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
-                            onDownloadClick = { viewModel.downloadAndInstall(addon) }
+                            onDownloadClick = { viewModel.downloadAndInstall(addon) },
+                            modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(300))
                         )
                     }
                 }
@@ -135,6 +234,7 @@ fun AddonScreen(viewModel: AddonViewModel = viewModel()) {
 fun AddonCard(
     addon: AddonItem,
     downloadState: DownloadState,
+    modifier: Modifier = Modifier,
     onDownloadClick: () -> Unit
 ) {
     ElevatedCard(
@@ -142,9 +242,9 @@ fun AddonCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
-        Column {
+        Column(modifier = Modifier.animateContentSize(animationSpec = tween(300))) {
             if (!addon.thumbnailUrl.isNullOrEmpty()) {
                 AsyncImage(
                     model = addon.thumbnailUrl,
@@ -200,7 +300,7 @@ fun AddonCard(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     SizedCircularProgressIndicator(size = 16.dp, strokeWidth = 2.dp)
-                                    Text("Downloading...")
+                                    Text(stringResource(R.string.downloading))
                                 }
                             }
                         }
@@ -210,14 +310,14 @@ fun AddonCard(
                             ) {
                                 Icon(Icons.Filled.PlayArrow, contentDescription = "Play")
                                 Spacer(Modifier.width(8.dp))
-                                Text("Open in Minecraft")
+                                Text(stringResource(R.string.open_in_minecraft))
                             }
                         }
                         is DownloadState.Idle -> {
                             Button(
                                 onClick = onDownloadClick
                             ) {
-                                Text("Download & Install")
+                                Text(stringResource(R.string.download_and_install))
                             }
                         }
                     }

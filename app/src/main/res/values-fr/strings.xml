@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Modules MC</string>
+    <string name="search_addons">Rechercher des modules...</string>
+    <string name="filter_all">Tout</string>
+    <string name="filter_texture_pack">Pack de textures</string>
+    <string name="filter_addon">Module</string>
+    <string name="filter_world">Monde</string>
+    <string name="refresh">Actualiser</string>
+    <string name="settings">Paramètres</string>
+    <string name="about_creators">À propos des créateurs</string>
+    <string name="error">Erreur : %s</string>
+    <string name="no_addons_found">Aucun module trouvé.</string>
+    <string name="open_in_minecraft">Ouvrir dans Minecraft</string>
+    <string name="downloading">Téléchargement...</string>
+    <string name="download_and_install">Télécharger et installer</string>
+    <string name="about_title">À propos</string>
+    <string name="back_to_addons">Retour</string>
+    <string name="mc_addons">Modules MC</string>
+    <string name="version">Version 1.0 • Installateur Bedrock One-Tap</string>
+    <string name="description">Téléchargez et importez directement des packs de textures, des modules et des mondes dans Minecraft Bedrock avec une installation instantanée.</string>
+    <string name="main_authors">Auteurs principaux et créateurs</string>
+    <string name="author_role">Auteur principal et créateur</string>
+    <string name="joseph_lim_desc">Concepteur de concepts principal et architecte central de MC Addons.</string>
+    <string name="loo_chin_siang_desc">Développeur principal et architecte technique du moteur d\'installation.</string>
+    <string name="app_highlights">Points forts de l\'application</string>
+    <string name="app_highlights_desc">• Interface expressive Material Design 3
+• Catalogue cloud Supabase en temps réel
+• Lanceur .mcpack / .mcaddon / .mcworld sans tracas
+• Conçu avec Kotlin &amp; Jetpack Compose</string>
+    <string name="crafted_with">Conçu avec</string>
+    <string name="by_authors">par Joseph Lim &amp; Loo Chin Siang</string>
+    <string name="settings_title">Paramètres</string>
+    <string name="preferences">Préférences</string>
+    <string name="appearance">Apparence</string>
+    <string name="appearance_desc">Thème, couleurs et paramètres visuels</string>
+    <string name="language">Langue</string>
+    <string name="theme">Thème</string>
+    <string name="system_default">Par défaut (système)</string>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="select_language">Choisir la langue</string>
+</resources>

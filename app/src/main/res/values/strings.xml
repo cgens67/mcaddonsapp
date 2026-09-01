@@ -1,3 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">MC Addons</string>
+    <string name="search_addons">Search addons...</string>
+    <string name="filter_all">All</string>
+    <string name="filter_texture_pack">Texture Pack</string>
+    <string name="filter_addon">Addon</string>
+    <string name="filter_world">World</string>
+    <string name="refresh">Refresh</string>
+    <string name="settings">Settings</string>
+    <string name="about_creators">About Creators</string>
+    <string name="error">Error: %s</string>
+    <string name="no_addons_found">No addons found.</string>
+    <string name="open_in_minecraft">Open in Minecraft</string>
+    <string name="downloading">Downloading...</string>
+    <string name="download_and_install">Download &amp; Install</string>
+    <string name="about_title">About</string>
+    <string name="back_to_addons">Back</string>
+    <string name="mc_addons">MC Addons</string>
+    <string name="version">Version 1.0 • Bedrock One-Tap Installer</string>
+    <string name="description">Directly download and import Texture Packs, Addons, and Worlds into Minecraft Bedrock with instant one-tap installation.</string>
+    <string name="main_authors">Main Authors &amp; Creators</string>
+    <string name="author_role">Main Author &amp; Creator</string>
+    <string name="joseph_lim_desc">Lead concept designer and core architect behind MC Addons.</string>
+    <string name="loo_chin_siang_desc">Lead developer and technical architect of the installation engine.</string>
+    <string name="app_highlights">Application Highlights</string>
+    <string name="app_highlights_desc">• Material Design 3 Expressive interface
+• Real-time Supabase cloud catalog
+• Zero-fuss .mcpack / .mcaddon / .mcworld launcher
+• Built with Kotlin &amp; Jetpack Compose</string>
+    <string name="crafted_with">Crafted with</string>
+    <string name="by_authors">by Joseph Lim &amp; Loo Chin Siang</string>
+    <string name="settings_title">Settings</string>
+    <string name="preferences">Preferences</string>
+    <string name="appearance">Appearance</string>
+    <string name="appearance_desc">Theme, colors, and visual settings</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="system_default">System Default</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="select_language">Select Language</string>
 </resources>

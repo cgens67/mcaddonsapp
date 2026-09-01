@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-  namespace = "com.example"
+  namespace = "com.cgens67.mcaddons"
   compileSdk = 37
 
   defaultConfig {
-    applicationId = "com.aistudio.minecraftinstaller.mcx1"
+    applicationId = "com.cgens67.mcaddons"
     minSdk = 24
     targetSdk = 36
     versionCode = 1
@@ -26,11 +26,14 @@ android {
 
   signingConfigs {
     create("release") {
-      val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
+      val keystorePath = System.getenv("KEYSTORE_PATH").takeIf { !it.isNullOrBlank() } ?: "${rootDir}/my-upload-key.jks"
+      val keystoreFile = file(keystorePath)
+      if (keystoreFile.exists()) {
+        storeFile = keystoreFile
+        storePassword = System.getenv("STORE_PASSWORD").takeIf { !it.isNullOrBlank() }
+        keyAlias = System.getenv("KEY_ALIAS").takeIf { !it.isNullOrBlank() } ?: "upload"
+        keyPassword = System.getenv("KEY_PASSWORD").takeIf { !it.isNullOrBlank() }
+      }
     }
     create("debugConfig") {
       storeFile = file("${rootDir}/debug.keystore")
@@ -45,7 +48,11 @@ android {
       isCrunchPngs = false
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
+      
+      val keystorePath = System.getenv("KEYSTORE_PATH").takeIf { !it.isNullOrBlank() } ?: "${rootDir}/my-upload-key.jks"
+      if (file(keystorePath).exists()) {
+        signingConfig = signingConfigs.getByName("release")
+      }
     }
     debug { signingConfig = signingConfigs.getByName("debugConfig") }
   }
@@ -122,6 +129,7 @@ dependencies {
   // implementation(libs.play.services.location)
   // implementation(libs.retrofit)
   
+  implementation("androidx.appcompat:appcompat:1.6.1")
   implementation("io.ktor:ktor-client-android:3.0.3")
   implementation("io.ktor:ktor-client-content-negotiation:3.0.3")
   implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.3")

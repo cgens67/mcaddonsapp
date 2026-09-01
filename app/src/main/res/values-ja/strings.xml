@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MCアドオン</string>
+    <string name="search_addons">アドオンを検索...</string>
+    <string name="filter_all">すべて</string>
+    <string name="filter_texture_pack">テクスチャパック</string>
+    <string name="filter_addon">アドオン</string>
+    <string name="filter_world">ワールド</string>
+    <string name="refresh">更新</string>
+    <string name="settings">設定</string>
+    <string name="about_creators">クリエイターについて</string>
+    <string name="error">エラー: %s</string>
+    <string name="no_addons_found">アドオンが見つかりません。</string>
+    <string name="open_in_minecraft">Minecraftで開く</string>
+    <string name="downloading">ダウンロード中...</string>
+    <string name="download_and_install">ダウンロードしてインストール</string>
+    <string name="about_title">アプリについて</string>
+    <string name="back_to_addons">戻る</string>
+    <string name="mc_addons">MCアドオン</string>
+    <string name="version">バージョン 1.0 • Bedrock One-Tap インストーラ</string>
+    <string name="description">テクスチャパック、アドオン、ワールドを直接ダウンロードし、ワンタップインストールでMinecraft Bedrockに即座にインポートします。</string>
+    <string name="main_authors">主な著者とクリエイター</string>
+    <string name="author_role">主な著者兼クリエイター</string>
+    <string name="joseph_lim_desc">MC Addonsのリードコンセプトデザイナーおよびコアアーキテクト。</string>
+    <string name="loo_chin_siang_desc">インストールエンジンのリード開発者およびテクニカルアーキテクト。</string>
+    <string name="app_highlights">アプリのハイライト</string>
+    <string name="app_highlights_desc">• Material Design 3 Expressive インターフェース
+• リアルタイムSupabaseクラウドカタログ
+• 手間のかからない .mcpack / .mcaddon / .mcworld ランチャー
+• Kotlin &amp; Jetpack Composeで構築</string>
+    <string name="crafted_with">Crafted with</string>
+    <string name="by_authors">by Joseph Lim &amp; Loo Chin Siang</string>
+    <string name="settings_title">設定</string>
+    <string name="preferences">環境設定</string>
+    <string name="appearance">外観</string>
+    <string name="appearance_desc">テーマ、色、視覚設定</string>
+    <string name="language">言語</string>
+    <string name="theme">テーマ</string>
+    <string name="system_default">システムデフォルト</string>
+    <string name="light">ライト</string>
+    <string name="dark">ダーク</string>
+    <string name="select_language">言語を選択</string>
+</resources>

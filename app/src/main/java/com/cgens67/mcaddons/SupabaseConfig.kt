@@ -1,4 +1,4 @@
-package com.example
+package com.cgens67.mcaddons
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

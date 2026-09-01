@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MC Addons</string>
+    <string name="search_addons">Addons suchen...</string>
+    <string name="filter_all">Alle</string>
+    <string name="filter_texture_pack">Texturpaket</string>
+    <string name="filter_addon">Addon</string>
+    <string name="filter_world">Welt</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="settings">Einstellungen</string>
+    <string name="about_creators">Über die Ersteller</string>
+    <string name="error">Fehler: %s</string>
+    <string name="no_addons_found">Keine Addons gefunden.</string>
+    <string name="open_in_minecraft">In Minecraft öffnen</string>
+    <string name="downloading">Wird heruntergeladen...</string>
+    <string name="download_and_install">Herunterladen &amp; Installieren</string>
+    <string name="about_title">Über</string>
+    <string name="back_to_addons">Zurück</string>
+    <string name="mc_addons">MC Addons</string>
+    <string name="version">Version 1.0 • Bedrock One-Tap Installer</string>
+    <string name="description">Laden Sie Texturpakete, Addons und Welten direkt herunter und importieren Sie sie mit der sofortigen One-Tap-Installation in Minecraft Bedrock.</string>
+    <string name="main_authors">Hauptautoren &amp; Ersteller</string>
+    <string name="author_role">Hauptautor &amp; Ersteller</string>
+    <string name="joseph_lim_desc">Leitender Konzeptdesigner und Kernarchitekt hinter MC Addons.</string>
+    <string name="loo_chin_siang_desc">Leitender Entwickler und technischer Architekt der Installations-Engine.</string>
+    <string name="app_highlights">App-Highlights</string>
+    <string name="app_highlights_desc">• Expressive Material Design 3 Schnittstelle
+• Echtzeit-Supabase-Cloud-Katalog
+• Problemloser .mcpack / .mcaddon / .mcworld Launcher
+• Erstellt mit Kotlin &amp; Jetpack Compose</string>
+    <string name="crafted_with">Erstellt mit</string>
+    <string name="by_authors">von Joseph Lim &amp; Loo Chin Siang</string>
+    <string name="settings_title">Einstellungen</string>
+    <string name="preferences">Präferenzen</string>
+    <string name="appearance">Aussehen</string>
+    <string name="appearance_desc">Thema, Farben und visuelle Einstellungen</string>
+    <string name="language">Sprache</string>
+    <string name="theme">Thema</string>
+    <string name="system_default">Systemvorgabe</string>
+    <string name="light">Hell</string>
+    <string name="dark">Dunkel</string>
+    <string name="select_language">Sprache auswählen</string>
+</resources>
