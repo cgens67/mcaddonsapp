@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val selectedTheme by themePreferences.themeFlow.collectAsState()
+            val selectedLoadingStyle by themePreferences.loadingStyleFlow.collectAsState()
             val darkTheme = when (selectedTheme) {
                 "Dark" -> true
                 "Light" -> false
@@ -117,12 +118,15 @@ class MainActivity : ComponentActivity() {
                                 AppearanceSettingsScreen(
                                     selectedTheme = selectedTheme,
                                     onThemeSelected = { themePreferences.setTheme(it) },
+                                    selectedLoadingStyle = selectedLoadingStyle,
+                                    onLoadingStyleSelected = { themePreferences.setLoadingStyle(it) },
                                     onNavigateBack = { currentScreen = "settings" }
                                 )
                             }
 
                             else -> {
                                 AddonScreen(
+                                    loadingStyle = selectedLoadingStyle,
                                     onNavigateToAbout = { currentScreen = "about" },
                                     onNavigateToSettings = { currentScreen = "settings" }
                                 )
@@ -135,10 +139,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class ContentDisplayState {
+    Loading,
+    Error,
+    Empty,
+    Content
+}
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AddonScreen(
     viewModel: AddonViewModel = viewModel(),
+    loadingStyle: String = ThemePreferences.LOADING_STYLE_PICKAXE,
     onNavigateToAbout: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {}
 ) {
@@ -205,32 +217,61 @@ fun AddonScreen(
                 }
             }
             
-            if (uiState.isLoading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    LoadingIndicator()
-                }
-            } else if (uiState.error != null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = stringResource(R.string.error, uiState.error ?: ""), color = MaterialTheme.colorScheme.error)
-                }
-            } else if (uiState.filteredAddons.isEmpty()) {
-                EmptyStateAnimation(modifier = Modifier.fillMaxSize())
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(uiState.filteredAddons, key = { it.id }) { addon ->
-                        AddonCard(
-                            addon = addon,
-                            downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
-                            onDownloadClick = { viewModel.downloadAndInstall(addon) },
-                            modifier = Modifier.animateItem(
-                                fadeInSpec = tween(400, easing = FastOutSlowInEasing),
-                                fadeOutSpec = tween(200, easing = FastOutSlowInEasing),
-                                placementSpec = tween(400, easing = FastOutSlowInEasing)
+            val displayState = when {
+                uiState.isLoading -> ContentDisplayState.Loading
+                uiState.error != null -> ContentDisplayState.Error
+                uiState.filteredAddons.isEmpty() -> ContentDisplayState.Empty
+                else -> ContentDisplayState.Content
+            }
+
+            AnimatedContent(
+                targetState = displayState,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(450, easing = FastOutSlowInEasing)) togetherWith
+                    fadeOut(animationSpec = tween(350, easing = FastOutSlowInEasing))
+                },
+                label = "content_fade_transition",
+                modifier = Modifier.fillMaxSize()
+            ) { targetDisplayState ->
+                when (targetDisplayState) {
+                    ContentDisplayState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            AppLoadingIndicator(
+                                loadingStyle = loadingStyle,
+                                labelText = stringResource(R.string.loading)
                             )
-                        )
+                        }
+                    }
+                    ContentDisplayState.Error -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(R.string.error, uiState.error ?: ""),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                    ContentDisplayState.Empty -> {
+                        EmptyStateAnimation(modifier = Modifier.fillMaxSize())
+                    }
+                    ContentDisplayState.Content -> {
+                        LazyColumn(
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(uiState.filteredAddons, key = { it.id }) { addon ->
+                                AddonCard(
+                                    addon = addon,
+                                    loadingStyle = loadingStyle,
+                                    downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
+                                    onDownloadClick = { viewModel.downloadAndInstall(addon) },
+                                    modifier = Modifier.animateItem(
+                                        fadeInSpec = tween(400, easing = FastOutSlowInEasing),
+                                        fadeOutSpec = tween(200, easing = FastOutSlowInEasing),
+                                        placementSpec = tween(400, easing = FastOutSlowInEasing)
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -243,6 +284,7 @@ fun AddonScreen(
 fun AddonCard(
     addon: AddonItem,
     downloadState: DownloadState,
+    loadingStyle: String = ThemePreferences.LOADING_STYLE_PICKAXE,
     modifier: Modifier = Modifier,
     onDownloadClick: () -> Unit
 ) {
@@ -308,7 +350,11 @@ fun AddonCard(
                                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    SizedCircularProgressIndicator(size = 16.dp, strokeWidth = 2.dp)
+                                    if (loadingStyle == ThemePreferences.LOADING_STYLE_PICKAXE) {
+                                        PickaxeLoadingIndicator(size = 18.dp)
+                                    } else {
+                                        SizedCircularProgressIndicator(size = 16.dp, strokeWidth = 2.dp)
+                                    }
                                     Text(stringResource(R.string.downloading))
                                 }
                             }

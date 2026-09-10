@@ -2,12 +2,7 @@ package com.cgens67.mcaddons
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,21 +21,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.OpenInNew
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Translate
-import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Badge
@@ -56,17 +42,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -77,12 +59,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 
 private object AboutDimensions {
     val HorizontalHeroBreakpoint = 600.dp
-    val MaxHeroContentWidth = 600.dp
 }
 
 private object AboutSpacing {
@@ -102,8 +81,6 @@ fun AboutScreen(
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    var showTranslationDialog by remember { mutableStateOf(false) }
-    var showLicenseDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -147,17 +124,6 @@ fun AboutScreen(
                 AboutIdentityCard()
             }
 
-            item(key = "project_info_header") {
-                AboutSectionHeader(title = stringResource(R.string.preferences))
-            }
-
-            item(key = "project_information") {
-                AboutProjectInformationSection(
-                    onOpenTranslations = { showTranslationDialog = true },
-                    onOpenLicenses = { showLicenseDialog = true }
-                )
-            }
-
             item(key = "lead_developer_header") {
                 AboutSectionHeader(title = stringResource(R.string.about_team))
             }
@@ -165,40 +131,22 @@ fun AboutScreen(
             item(key = "lead_developers") {
                 Column(verticalArrangement = Arrangement.spacedBy(AboutSpacing.sm)) {
                     LeadDeveloperCard(
-                        name = "Joseph Lim",
-                        role = "Lead Concept Designer & Core Architect",
-                        description = stringResource(R.string.joseph_lim_desc),
-                        badgeIcon = Icons.Filled.Verified
-                    )
-                    LeadDeveloperCard(
                         name = "Loo Chin Siang",
-                        role = "Lead Developer & Engine Architect",
-                        description = stringResource(R.string.loo_chin_siang_desc),
+                        role = stringResource(R.string.author_role),
                         badgeIcon = Icons.Filled.Code
                     )
+                    LeadDeveloperCard(
+                        name = "Joseph Lim",
+                        role = stringResource(R.string.author_role),
+                        badgeIcon = null
+                    )
                 }
-            }
-
-            item(key = "app_highlights_header") {
-                AboutSectionHeader(title = stringResource(R.string.app_highlights))
-            }
-
-            item(key = "app_highlights") {
-                AppHighlightsCard()
             }
 
             item(key = "footer") {
                 AboutFooter()
             }
         }
-    }
-
-    if (showTranslationDialog) {
-        TranslationContributorsDialog(onDismissRequest = { showTranslationDialog = false })
-    }
-
-    if (showLicenseDialog) {
-        DependencyLicensesDialog(onDismissRequest = { showLicenseDialog = false })
     }
 }
 
@@ -248,15 +196,13 @@ private fun SurfaceAppIcon(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        color = Color(0xFF4CAF50),
+        contentColor = Color.White
     ) {
-        val iconTint = MaterialTheme.colorScheme.onPrimaryContainer
-        val iconColorFilter = remember(iconTint) { ColorFilter.tint(iconTint) }
         Image(
             painter = painterResource(R.drawable.about_splash),
             contentDescription = null,
-            colorFilter = iconColorFilter,
+            colorFilter = remember { ColorFilter.tint(Color.White) },
             modifier = Modifier
                 .padding(AboutSpacing.sm)
                 .size(64.dp)
@@ -350,25 +296,7 @@ private fun LinkChipRow(
     ) {
         AssistChip(
             onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/cgens67/mcaddons"))
-                context.startActivity(Intent.createChooser(intent, "Open GitHub"))
-            },
-            label = { Text(stringResource(R.string.github)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Code,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-            },
-            colors = AssistChipDefaults.assistChipColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-            )
-        )
-
-        AssistChip(
-            onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://minecraft.net"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://jlmcpackaddons.vercel.app"))
                 context.startActivity(Intent.createChooser(intent, "Open Website"))
             },
             label = { Text(stringResource(R.string.website)) },
@@ -389,7 +317,10 @@ private fun LinkChipRow(
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_SUBJECT, "MC Addons")
-                    putExtra(Intent.EXTRA_TEXT, "Download texture packs, addons, and worlds with MC Addons!")
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Download texture packs, addons from Joseph Lim and Loo Chin Siang!\nhttps://jlmcpackaddons.vercel.app"
+                    )
                 }
                 context.startActivity(Intent.createChooser(shareIntent, "Share MC Addons"))
             },
@@ -423,99 +354,10 @@ private fun AboutSectionHeader(
 }
 
 @Composable
-private fun AboutProjectInformationSection(
-    onOpenTranslations: () -> Unit,
-    onOpenLicenses: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
-    ) {
-        Column {
-            AboutActionListItem(
-                icon = Icons.Filled.Translate,
-                title = stringResource(R.string.about_contributor_translation),
-                subtitle = "Community language localizations",
-                onClick = onOpenTranslations
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = AboutSpacing.md),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            AboutActionListItem(
-                icon = Icons.Filled.Info,
-                title = stringResource(R.string.about_license),
-                subtitle = "Third-party open source notices",
-                onClick = onOpenLicenses
-            )
-        }
-    }
-}
-
-@Composable
-private fun AboutActionListItem(
-    icon: ImageVector,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(AboutSpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AboutSpacing.md)
-    ) {
-        Surface(
-            shape = RoundedCornerShape(14.dp),
-            color = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            modifier = Modifier.size(42.dp)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-            modifier = Modifier.size(20.dp)
-        )
-    }
-}
-
-@Composable
 private fun LeadDeveloperCard(
     name: String,
     role: String,
-    description: String,
-    badgeIcon: ImageVector,
+    badgeIcon: ImageVector?,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -558,12 +400,14 @@ private fun LeadDeveloperCard(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    Icon(
-                        imageVector = badgeIcon,
-                        contentDescription = "Verified Member",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    if (badgeIcon != null) {
+                        Icon(
+                            imageVector = badgeIcon,
+                            contentDescription = "Badge",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
 
                 Text(
@@ -572,38 +416,7 @@ private fun LeadDeveloperCard(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary
                 )
-
-                Spacer(modifier = Modifier.height(AboutSpacing.xxs))
-
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
-        }
-    }
-}
-
-@Composable
-private fun AppHighlightsCard(modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(AboutSpacing.md),
-            verticalArrangement = Arrangement.spacedBy(AboutSpacing.sm)
-        ) {
-            Text(
-                text = stringResource(R.string.app_highlights_desc),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.3
-            )
         }
     }
 }
@@ -636,219 +449,5 @@ private fun AboutFooter(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TranslationContributorsDialog(
-    onDismissRequest: () -> Unit
-) {
-    val languages = listOf(
-        Triple("English", "en", "Full (Default)"),
-        Triple("Español", "es", "Community Translated"),
-        Triple("Deutsch", "de", "Community Translated"),
-        Triple("Français", "fr", "Community Translated"),
-        Triple("Português (Brasil)", "pt-BR", "Community Translated"),
-        Triple("Русский", "ru", "Community Translated"),
-        Triple("中文 (简体)", "zh-CN", "Community Translated"),
-        Triple("日本語", "ja", "Community Translated"),
-        Triple("Italiano", "it", "Community Translated")
-    )
-
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.about_contributor_translation),
-                            fontWeight = FontWeight.Bold
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onDismissRequest) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = stringResource(R.string.close_dialog)
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
-                )
-            }
-        ) { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentPadding = PaddingValues(AboutSpacing.md),
-                verticalArrangement = Arrangement.spacedBy(AboutSpacing.sm)
-            ) {
-                item {
-                    Text(
-                        text = "We deeply appreciate all community volunteers and contributors helping localize MC Addons across the globe.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = AboutSpacing.xs)
-                    )
-                }
-
-                items(languages.size) { index ->
-                    val (name, code, status) = languages[index]
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(AboutSpacing.md),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AboutSpacing.md)
-                        ) {
-                            Surface(
-                                shape = CircleShape,
-                                color = MaterialTheme.colorScheme.secondaryContainer,
-                                modifier = Modifier.size(36.dp)
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Language,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                        modifier = Modifier.size(18.dp)
-                                    )
-                                }
-                            }
-
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = name,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                                Text(
-                                    text = code,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-
-                            Badge(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            ) {
-                                Text(
-                                    text = status,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun DependencyLicensesDialog(
-    onDismissRequest: () -> Unit
-) {
-    val libraries = listOf(
-        Pair("Jetpack Compose", "Apache License 2.0 • Android Open Source Project"),
-        Pair("Material 3 Expressive", "Apache License 2.0 • Google LLC"),
-        Pair("KotlinX Coroutines", "Apache License 2.0 • JetBrains s.r.o."),
-        Pair("KotlinX Serialization", "Apache License 2.0 • JetBrains s.r.o."),
-        Pair("Coil Image Loader", "Apache License 2.0 • Coil Contributors"),
-        Pair("AndroidX Core KTX", "Apache License 2.0 • Android Open Source Project"),
-        Pair("Supabase Kt", "MIT License • Jan-Lukas Göbel & Contributors"),
-        Pair("Ktor Client", "Apache License 2.0 • JetBrains s.r.o.")
-    )
-
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.about_license),
-                            fontWeight = FontWeight.Bold
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onDismissRequest) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = stringResource(R.string.close_dialog)
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
-                )
-            }
-        ) { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentPadding = PaddingValues(AboutSpacing.md),
-                verticalArrangement = Arrangement.spacedBy(AboutSpacing.sm)
-            ) {
-                item {
-                    Text(
-                        text = "MC Addons is built upon open source software and libraries:",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = AboutSpacing.xs)
-                    )
-                }
-
-                items(libraries.size) { index ->
-                    val (libName, license) = libraries[index]
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(AboutSpacing.md),
-                            verticalArrangement = Arrangement.spacedBy(AboutSpacing.xxs)
-                        ) {
-                            Text(
-                                text = libName,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            Text(
-                                text = license,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-            }
-        }
     }
 }

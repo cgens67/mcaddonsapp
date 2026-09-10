@@ -41,4 +41,10 @@
     <string name="dark">Oscuro</string>
     <string name="select_language">Seleccionar idioma</string>
     <string name="no_addons_desc">Intenta ajustar tus filtros o la consulta de búsqueda.</string>
+    <string name="loading">Cargando...</string>
+    <string name="loading_indicator_style">Estilo de indicador de carga</string>
+    <string name="loading_style_pickaxe">Pico de diamante</string>
+    <string name="loading_style_pickaxe_desc">Vector de Minecraft con animación de minería</string>
+    <string name="loading_style_default">Material 3</string>
+    <string name="loading_style_default_desc">Indicador de progreso expresivo Material 3 estándar</string>
 </resources>

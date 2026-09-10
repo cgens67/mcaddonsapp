@@ -41,4 +41,10 @@
     <string name="dark">Dunkel</string>
     <string name="select_language">Sprache auswählen</string>
     <string name="no_addons_desc">Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen.</string>
+    <string name="loading">Wird geladen...</string>
+    <string name="loading_indicator_style">Ladeanzeige-Stil</string>
+    <string name="loading_style_pickaxe">Diamant-Spitzhacke</string>
+    <string name="loading_style_pickaxe_desc">Minecraft-Pixelart-Vektor mit animierter Abbau-Bewegung</string>
+    <string name="loading_style_default">Material 3</string>
+    <string name="loading_style_default_desc">Standardmäßiger Material 3 Ladeindikator</string>
 </resources>

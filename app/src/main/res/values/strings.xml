@@ -13,6 +13,7 @@
     <string name="no_addons_found">No addons found.</string>
     <string name="open_in_minecraft">Open in Minecraft</string>
     <string name="downloading">Downloading...</string>
+    <string name="loading">Loading...</string>
     <string name="download_and_install">Download &amp; Install</string>
     <string name="about_title">About</string>
     <string name="back_to_addons">Back</string>
@@ -29,7 +30,7 @@
 • Zero-fuss .mcpack / .mcaddon / .mcworld launcher
 • Built with Kotlin &amp; Jetpack Compose</string>
     <string name="crafted_with">Crafted with</string>
-    <string name="by_authors">by Joseph Lim &amp; Loo Chin Siang</string>
+    <string name="by_authors">by Loo Chin Siang &amp; Joseph Lim</string>
     <string name="settings_title">Settings</string>
     <string name="preferences">Preferences</string>
     <string name="appearance">Appearance</string>
@@ -62,4 +63,9 @@
     <string name="github">GitHub</string>
     <string name="website">Website</string>
     <string name="share">Share</string>
+    <string name="loading_indicator_style">Loading Indicator Style</string>
+    <string name="loading_style_pickaxe">Diamond Pickaxe</string>
+    <string name="loading_style_pickaxe_desc">Minecraft pixel-art vector with swinging mining animation</string>
+    <string name="loading_style_default">Material 3</string>
+    <string name="loading_style_default_desc">Standard Material 3 expressive progress indicator</string>
 </resources>

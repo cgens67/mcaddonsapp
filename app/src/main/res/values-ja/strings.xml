@@ -41,4 +41,10 @@
     <string name="dark">ダーク</string>
     <string name="select_language">言語を選択</string>
     <string name="no_addons_desc">フィルターまたは検索クエリを調整してみてください。</string>
+    <string name="loading">読み込み中...</string>
+    <string name="loading_indicator_style">読み込みインジケーターのスタイル</string>
+    <string name="loading_style_pickaxe">ダイヤのツルハシ</string>
+    <string name="loading_style_pickaxe_desc">マインクラフト風ドット絵の採掘アニメーション</string>
+    <string name="loading_style_default">Material 3</string>
+    <string name="loading_style_default_desc">標準のMaterial 3プログレスインジケーター</string>
 </resources>
