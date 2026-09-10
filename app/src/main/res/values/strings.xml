@@ -54,4 +54,12 @@
     <string name="last_updated_version">Updated: %s</string>
     <string name="changing_language">Changing language...</string>
     <string name="configure_app_language">Configure app language</string>
+    <string name="about_contributor_translation">Translation Contributors</string>
+    <string name="about_license">Open Source Licenses</string>
+    <string name="about_lead_developer">Lead Developers</string>
+    <string name="about_team">Main Authors &amp; Creators</string>
+    <string name="close_dialog">Close</string>
+    <string name="github">GitHub</string>
+    <string name="website">Website</string>
+    <string name="share">Share</string>
 </resources>
