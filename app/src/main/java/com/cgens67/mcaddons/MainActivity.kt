@@ -51,6 +51,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import coil.compose.AsyncImage
 import com.cgens67.mcaddons.ui.theme.MyApplicationTheme
@@ -233,52 +237,68 @@ fun AddonScreen(
                 else -> ContentDisplayState.Content
             }
 
-            AnimatedContent(
-                targetState = displayState,
-                transitionSpec = {
-                    fadeIn(animationSpec = tween(450, easing = FastOutSlowInEasing)) togetherWith
-                    fadeOut(animationSpec = tween(350, easing = FastOutSlowInEasing))
-                },
-                label = "content_fade_transition",
+            PullToRefreshBox(
+                isRefreshing = uiState.isRefreshing,
+                onRefresh = { viewModel.refreshAddons() },
                 modifier = Modifier.fillMaxSize()
-            ) { targetDisplayState ->
-                when (targetDisplayState) {
-                    ContentDisplayState.Loading -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            AppLoadingIndicator(
-                                loadingStyle = loadingStyle,
-                                labelText = stringResource(R.string.loading)
-                            )
-                        }
-                    }
-                    ContentDisplayState.Error -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text(
-                                text = stringResource(R.string.error, uiState.error ?: ""),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                    ContentDisplayState.Empty -> {
-                        EmptyStateAnimation(modifier = Modifier.fillMaxSize())
-                    }
-                    ContentDisplayState.Content -> {
-                        LazyColumn(
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            items(uiState.filteredAddons, key = { it.id }) { addon ->
-                                AddonCard(
-                                    addon = addon,
+            ) {
+                AnimatedContent(
+                    targetState = displayState,
+                    transitionSpec = {
+                        fadeIn(animationSpec = tween(450, easing = FastOutSlowInEasing)) togetherWith
+                        fadeOut(animationSpec = tween(350, easing = FastOutSlowInEasing))
+                    },
+                    label = "content_fade_transition",
+                    modifier = Modifier.fillMaxSize()
+                ) { targetDisplayState ->
+                    when (targetDisplayState) {
+                        ContentDisplayState.Loading -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                AppLoadingIndicator(
                                     loadingStyle = loadingStyle,
-                                    downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
-                                    onDownloadClick = { viewModel.downloadAndInstall(addon) },
-                                    modifier = Modifier.animateItem(
-                                        fadeInSpec = tween(400, easing = FastOutSlowInEasing),
-                                        fadeOutSpec = tween(200, easing = FastOutSlowInEasing),
-                                        placementSpec = tween(400, easing = FastOutSlowInEasing)
-                                    )
+                                    labelText = stringResource(R.string.loading)
                                 )
+                            }
+                        }
+                        ContentDisplayState.Error -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState()),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.error, uiState.error ?: ""),
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        }
+                        ContentDisplayState.Empty -> {
+                            EmptyStateAnimation(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
+                            )
+                        }
+                        ContentDisplayState.Content -> {
+                            LazyColumn(
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(uiState.filteredAddons, key = { it.id }) { addon ->
+                                    AddonCard(
+                                        addon = addon,
+                                        loadingStyle = loadingStyle,
+                                        downloadState = uiState.downloadStates[addon.id] ?: DownloadState.Idle,
+                                        onDownloadClick = { viewModel.downloadAndInstall(addon) },
+                                        modifier = Modifier.animateItem(
+                                            fadeInSpec = tween(400, easing = FastOutSlowInEasing),
+                                            fadeOutSpec = tween(200, easing = FastOutSlowInEasing),
+                                            placementSpec = tween(400, easing = FastOutSlowInEasing)
+                                        )
+                                    )
+                                }
                             }
                         }
                     }

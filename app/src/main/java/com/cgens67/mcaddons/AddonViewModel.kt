@@ -21,6 +21,7 @@ data class AddonUiState(
     val addons: List<AddonItem> = emptyList(),
     val filteredAddons: List<AddonItem> = emptyList(),
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val error: String? = null,
     val downloadStates: Map<Long, DownloadState> = emptyMap(),
     val selectedCategory: String = "All",
@@ -35,9 +36,15 @@ class AddonViewModel(application: Application) : AndroidViewModel(application) {
         fetchAddons()
     }
 
-    fun fetchAddons() {
+    fun fetchAddons(isUserRefresh: Boolean = false) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _uiState.update { 
+                it.copy(
+                    isLoading = if (isUserRefresh) false else it.addons.isEmpty(),
+                    isRefreshing = isUserRefresh,
+                    error = null
+                ) 
+            }
             try {
                 val url = "${SupabaseConfig.PROJECT_URL}/rest/v1/addons?select=*"
                 val response = SupabaseConfig.client.get(url)
@@ -46,13 +53,24 @@ class AddonViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         addons = items, 
                         isLoading = false,
+                        isRefreshing = false,
                         filteredAddons = filterItems(items, it.searchQuery, it.selectedCategory)
                     ) 
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, error = e.localizedMessage) }
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        isRefreshing = false, 
+                        error = e.localizedMessage
+                    ) 
+                }
             }
         }
+    }
+
+    fun refreshAddons() {
+        fetchAddons(isUserRefresh = true)
     }
 
     fun updateSearchQuery(query: String) {
