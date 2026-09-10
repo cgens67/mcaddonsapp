@@ -17,7 +17,7 @@
     <string name="about_title">アプリについて</string>
     <string name="back_to_addons">戻る</string>
     <string name="mc_addons">MCアドオン</string>
-    <string name="version">バージョン 1.0 • Bedrock One-Tap インストーラ</string>
+    <string name="version">バージョン 0.9.0 • Bedrock One-Tap インストーラ</string>
     <string name="description">テクスチャパック、アドオン、ワールドを直接ダウンロードし、ワンタップインストールでMinecraft Bedrockに即座にインポートします。</string>
     <string name="main_authors">主な著者とクリエイター</string>
     <string name="author_role">主な著者兼クリエイター</string>

@@ -47,6 +47,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.material.icons.rounded.SearchOff
 import androidx.compose.ui.text.style.TextAlign
 
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 
@@ -155,13 +156,16 @@ fun AddonScreen(
     onNavigateToSettings: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             LargeTopAppBar(
                 title = { 
                     Text(
-                        stringResource(R.string.app_name), 
+                        text = stringResource(R.string.app_name), 
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineLarge
                     ) 
@@ -176,7 +180,12 @@ fun AddonScreen(
                     IconButton(onClick = onNavigateToAbout) {
                         Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_creators))
                     }
-                }
+                },
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+                ),
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->

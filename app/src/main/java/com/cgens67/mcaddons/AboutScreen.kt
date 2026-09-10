@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AssistChip
@@ -143,9 +142,6 @@ fun AboutScreen(
                 }
             }
 
-            item(key = "footer") {
-                AboutFooter()
-            }
         }
     }
 }
@@ -239,7 +235,7 @@ private fun AboutIdentityTextContent(
             verticalArrangement = Arrangement.spacedBy(AboutSpacing.xs),
             modifier = Modifier.padding(vertical = AboutSpacing.xxs)
         ) {
-            AboutMetadataBadge(text = "v1.0")
+            AboutMetadataBadge(text = "v${BuildConfig.VERSION_NAME}")
             AboutMetadataBadge(text = "Bedrock")
             AboutMetadataBadge(text = "Release")
         }
@@ -418,36 +414,5 @@ private fun LeadDeveloperCard(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun AboutFooter(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = AboutSpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.crafted_with),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.outline
-        )
-        Spacer(modifier = Modifier.width(AboutSpacing.xs))
-        Icon(
-            imageVector = Icons.Filled.Favorite,
-            contentDescription = "Love",
-            tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(14.dp)
-        )
-        Spacer(modifier = Modifier.width(AboutSpacing.xs))
-        Text(
-            text = stringResource(R.string.by_authors),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }

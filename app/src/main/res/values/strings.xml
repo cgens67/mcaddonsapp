@@ -18,7 +18,7 @@
     <string name="about_title">About</string>
     <string name="back_to_addons">Back</string>
     <string name="mc_addons">MC Addons</string>
-    <string name="version">Version 1.0 • Bedrock One-Tap Installer</string>
+    <string name="version">Version 0.9.0 • Bedrock One-Tap Installer</string>
     <string name="description">Directly download and import Texture Packs, Addons, and Worlds into Minecraft Bedrock with instant one-tap installation.</string>
     <string name="main_authors">Main Authors &amp; Creators</string>
     <string name="author_role">Main Author &amp; Creator</string>

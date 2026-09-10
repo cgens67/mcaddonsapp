@@ -17,7 +17,7 @@
     <string name="about_title">关于</string>
     <string name="back_to_addons">返回</string>
     <string name="mc_addons">MC插件</string>
-    <string name="version">版本 1.0 • 基岩版一键安装器</string>
+    <string name="version">版本 0.9.0 • 基岩版一键安装器</string>
     <string name="description">直接下载材质包、插件和世界，并一键即时导入Minecraft基岩版。</string>
     <string name="main_authors">主要作者和创作者</string>
     <string name="author_role">主要作者与创作者</string>
