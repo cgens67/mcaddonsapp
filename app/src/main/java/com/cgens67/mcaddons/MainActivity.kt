@@ -9,6 +9,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import android.content.res.Configuration
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -164,36 +169,66 @@ fun AddonScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            LargeTopAppBar(
-                title = { 
-                    Text(
-                        text = stringResource(R.string.app_name), 
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineLarge
-                    ) 
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.fetchAddons() }) {
-                        Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
-                    }
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
-                    }
-                    IconButton(onClick = onNavigateToAbout) {
-                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_creators))
-                    }
-                },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
-                ),
-                scrollBehavior = scrollBehavior
-            )
+            if (isLandscape) {
+                TopAppBar(
+                    title = { 
+                        Text(
+                            text = stringResource(R.string.app_name), 
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleLarge
+                        ) 
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.fetchAddons() }) {
+                            Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
+                        }
+                        IconButton(onClick = onNavigateToSettings) {
+                            Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
+                        }
+                        IconButton(onClick = onNavigateToAbout) {
+                            Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_creators))
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+                    ),
+                    scrollBehavior = scrollBehavior
+                )
+            } else {
+                LargeTopAppBar(
+                    title = { 
+                        Text(
+                            text = stringResource(R.string.app_name), 
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.headlineLarge
+                        ) 
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.fetchAddons() }) {
+                            Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
+                        }
+                        IconButton(onClick = onNavigateToSettings) {
+                            Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
+                        }
+                        IconButton(onClick = onNavigateToAbout) {
+                            Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_creators))
+                        }
+                    },
+                    colors = TopAppBarDefaults.largeTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+                    ),
+                    scrollBehavior = scrollBehavior
+                )
+            }
         }
     ) { innerPadding ->
         Column(
@@ -201,35 +236,68 @@ fun AddonScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            OutlinedTextField(
-                value = uiState.searchQuery,
-                onValueChange = { viewModel.updateSearchQuery(it) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text(stringResource(R.string.search_addons)) },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                shape = RoundedCornerShape(24.dp),
-                singleLine = true
+            val categories = listOf(
+                "All" to stringResource(R.string.filter_all),
+                "Texture Pack" to stringResource(R.string.filter_texture_pack),
+                "Addon" to stringResource(R.string.filter_addon),
+                "World" to stringResource(R.string.filter_world)
             )
-            
-                val categories = listOf(
-                    "All" to stringResource(R.string.filter_all),
-                    "Texture Pack" to stringResource(R.string.filter_texture_pack),
-                    "Addon" to stringResource(R.string.filter_addon),
-                    "World" to stringResource(R.string.filter_world)
-                )
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(vertical = 8.dp)
-            ) {
-                items(categories) { (id, name) ->
-                    FilterChip(
-                        selected = uiState.selectedCategory == id,
-                        onClick = { viewModel.selectCategory(id) },
-                        label = { Text(name) }
+
+            if (isLandscape) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = uiState.searchQuery,
+                        onValueChange = { viewModel.updateSearchQuery(it) },
+                        modifier = Modifier.weight(1f),
+                        placeholder = { Text(stringResource(R.string.search_addons)) },
+                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                        shape = RoundedCornerShape(24.dp),
+                        singleLine = true
                     )
+
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(categories) { (id, name) ->
+                            FilterChip(
+                                selected = uiState.selectedCategory == id,
+                                onClick = { viewModel.selectCategory(id) },
+                                label = { Text(name) }
+                            )
+                        }
+                    }
+                }
+            } else {
+                OutlinedTextField(
+                    value = uiState.searchQuery,
+                    onValueChange = { viewModel.updateSearchQuery(it) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    placeholder = { Text(stringResource(R.string.search_addons)) },
+                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                    shape = RoundedCornerShape(24.dp),
+                    singleLine = true
+                )
+                
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+                    items(categories) { (id, name) ->
+                        FilterChip(
+                            selected = uiState.selectedCategory == id,
+                            onClick = { viewModel.selectCategory(id) },
+                            label = { Text(name) }
+                        )
+                    }
                 }
             }
             
@@ -284,8 +352,10 @@ fun AddonScreen(
                             )
                         }
                         ContentDisplayState.Content -> {
-                            LazyColumn(
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(minSize = 340.dp),
                                 contentPadding = PaddingValues(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(16.dp),
                                 modifier = Modifier.fillMaxSize()
                             ) {
