@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val selectedTheme by themePreferences.themeFlow.collectAsState()
             val selectedLoadingStyle by themePreferences.loadingStyleFlow.collectAsState()
+            val selectedImportTarget by themePreferences.importTargetFlow.collectAsState()
             val darkTheme = when (selectedTheme) {
                 "Dark" -> true
                 "Light" -> false
@@ -114,6 +115,8 @@ class MainActivity : ComponentActivity() {
                             "settings" -> {
                                 BackHandler { currentScreen = "home" }
                                 SettingsScreen(
+                                    selectedImportTarget = selectedImportTarget,
+                                    onImportTargetSelected = { themePreferences.setImportTarget(it) },
                                     onNavigateBack = { currentScreen = "home" },
                                     onNavigateToAppearance = { currentScreen = "appearance_settings" }
                                 )

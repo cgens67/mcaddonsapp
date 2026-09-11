@@ -68,4 +68,9 @@
     <string name="loading_style_pickaxe_desc">Minecraft pixel-art vector with swinging mining animation</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">Standard Material 3 expressive progress indicator</string>
+    <string name="import_behavior">Minecraft Import Destination</string>
+    <string name="import_direct_minecraft">Direct to Minecraft</string>
+    <string name="import_direct_minecraft_desc">Launch Minecraft (com.mojang.minecraftpe) directly • Default</string>
+    <string name="import_app_selector">App Selector</string>
+    <string name="import_app_selector_desc">Display system \"Open with…\" chooser to pick an app</string>
 </resources>

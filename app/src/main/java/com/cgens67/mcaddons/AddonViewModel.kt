@@ -107,7 +107,13 @@ class AddonViewModel(application: Application) : AndroidViewModel(application) {
                 ) 
             }
             
-            val success = MinecraftInstaller.downloadAndInstall(getApplication(), addon)
+            val preferences = ThemePreferences(getApplication())
+            val directToMinecraft = preferences.getImportTarget() == ThemePreferences.IMPORT_TARGET_MINECRAFT
+            val success = MinecraftInstaller.downloadAndInstall(
+                context = getApplication(), 
+                addon = addon, 
+                directToMinecraft = directToMinecraft
+            )
             
             _uiState.update { 
                 it.copy(

@@ -47,4 +47,9 @@
     <string name="loading_style_pickaxe_desc">Vecteur pixel-art Minecraft avec animation de minage</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">Indicateur de progression expressif Material 3 standard</string>
+    <string name="import_behavior">Destination d\'importation Minecraft</string>
+    <string name="import_direct_minecraft">Directement dans Minecraft</string>
+    <string name="import_direct_minecraft_desc">Lancer Minecraft (com.mojang.minecraftpe) directement • Par défaut</string>
+    <string name="import_app_selector">Sélecteur d\'application</string>
+    <string name="import_app_selector_desc">Afficher le sélecteur système \"Ouvrir avec…\" pour choisir une application</string>
 </resources>

@@ -47,4 +47,9 @@
     <string name="loading_style_pickaxe_desc">带挖掘摇摆动画的 Minecraft 像素艺术矢量图</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">标准 Material 3 表现力进度指示器</string>
+    <string name="import_behavior">Minecraft 导入目标</string>
+    <string name="import_direct_minecraft">直接进入 Minecraft</string>
+    <string name="import_direct_minecraft_desc">直接启动 Minecraft (com.mojang.minecraftpe) • 默认</string>
+    <string name="import_app_selector">应用选择器</string>
+    <string name="import_app_selector_desc">显示系统“打开方式…”选择器以选取应用</string>
 </resources>

@@ -47,4 +47,9 @@
     <string name="loading_style_pickaxe_desc">マインクラフト風ドット絵の採掘アニメーション</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">標準のMaterial 3プログレスインジケーター</string>
+    <string name="import_behavior">Minecraft インポート先</string>
+    <string name="import_direct_minecraft">Minecraft に直接送る</string>
+    <string name="import_direct_minecraft_desc">Minecraft (com.mojang.minecraftpe) を直接起動 • デフォルト</string>
+    <string name="import_app_selector">アプリ選択画面</string>
+    <string name="import_app_selector_desc">システム既定の「他のアプリで開く」選択画面を表示</string>
 </resources>

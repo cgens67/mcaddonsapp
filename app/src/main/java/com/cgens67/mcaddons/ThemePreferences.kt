@@ -10,6 +10,9 @@ class ThemePreferences(context: Context) {
     companion object {
         const val LOADING_STYLE_PICKAXE = "Pickaxe"
         const val LOADING_STYLE_DEFAULT = "Default"
+
+        const val IMPORT_TARGET_MINECRAFT = "Minecraft"
+        const val IMPORT_TARGET_CHOOSER = "Chooser"
     }
 
     private val prefs = context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
@@ -22,6 +25,11 @@ class ThemePreferences(context: Context) {
     )
     val loadingStyleFlow: StateFlow<String> = _loadingStyleFlow.asStateFlow()
 
+    private val _importTargetFlow = MutableStateFlow(
+        prefs.getString("selected_import_target", IMPORT_TARGET_MINECRAFT) ?: IMPORT_TARGET_MINECRAFT
+    )
+    val importTargetFlow: StateFlow<String> = _importTargetFlow.asStateFlow()
+
     fun setTheme(theme: String) {
         prefs.edit { putString("selected_theme", theme) }
         _themeFlow.value = theme
@@ -30,5 +38,14 @@ class ThemePreferences(context: Context) {
     fun setLoadingStyle(style: String) {
         prefs.edit { putString("selected_loading_style", style) }
         _loadingStyleFlow.value = style
+    }
+
+    fun setImportTarget(target: String) {
+        prefs.edit { putString("selected_import_target", target) }
+        _importTargetFlow.value = target
+    }
+
+    fun getImportTarget(): String {
+        return prefs.getString("selected_import_target", IMPORT_TARGET_MINECRAFT) ?: IMPORT_TARGET_MINECRAFT
     }
 }

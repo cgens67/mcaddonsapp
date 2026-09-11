@@ -47,4 +47,9 @@
     <string name="loading_style_pickaxe_desc">Vector de Minecraft con animación de minería</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">Indicador de progreso expresivo Material 3 estándar</string>
+    <string name="import_behavior">Destino de importación a Minecraft</string>
+    <string name="import_direct_minecraft">Directo a Minecraft</string>
+    <string name="import_direct_minecraft_desc">Abrir Minecraft (com.mojang.minecraftpe) directamente • Predeterminado</string>
+    <string name="import_app_selector">Selector de aplicaciones</string>
+    <string name="import_app_selector_desc">Mostrar el menú del sistema \"Abrir con…\" para elegir una aplicación</string>
 </resources>

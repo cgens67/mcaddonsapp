@@ -47,4 +47,9 @@
     <string name="loading_style_pickaxe_desc">Minecraft-Pixelart-Vektor mit animierter Abbau-Bewegung</string>
     <string name="loading_style_default">Material 3</string>
     <string name="loading_style_default_desc">Standardmäßiger Material 3 Ladeindikator</string>
+    <string name="import_behavior">Minecraft-Importziel</string>
+    <string name="import_direct_minecraft">Direkt zu Minecraft</string>
+    <string name="import_direct_minecraft_desc">Minecraft (com.mojang.minecraftpe) direkt starten • Standard</string>
+    <string name="import_app_selector">App-Auswahl</string>
+    <string name="import_app_selector_desc">Systemdialog \"Öffnen mit…\" anzeigen, um eine App auszuwählen</string>
 </resources>
